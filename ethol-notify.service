@@ -1,0 +1,26 @@
+[Unit]
+Description=ETHOL PENS presensi/tugas Telegram notifier
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=shabri
+Group=shabri
+WorkingDirectory=/home/shabri/ethol-notify
+EnvironmentFile=-/home/shabri/ethol-notify/.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 /home/shabri/ethol-notify/ethol_notify.py --loop
+Restart=always
+RestartSec=10
+TimeoutStopSec=35
+
+# Basic hardening. The script only needs to write its state directory.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/shabri/ethol-notify/state
+
+[Install]
+WantedBy=multi-user.target
